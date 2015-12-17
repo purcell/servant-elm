@@ -13,15 +13,30 @@ build-type:          Simple
 -- extra-source-files:
 cabal-version:       >=1.10
 
+-- library
+--   hs-source-dirs:      src
+--   exposed-modules:     Servant.Elm
+--                        Servant.Elm.HasCode
+--                        Servant.Elm.ToElm
+--                        Servant.Elm.Types
+--   build-depends:       base >= 4.7 && < 5
+--                        , servant >= 0.4.4.5
+--   default-language:    Haskell2010
+
 library
   hs-source-dirs:      src
   exposed-modules:     Servant.Elm
-                       Servant.Elm.HasCode
-                       Servant.Elm.ToElm
-                       Servant.Elm.Types
-  build-depends:       base >= 4.7 && < 5
-                       , servant >= 0.4.4.5
+
+  build-depends:       base    == 4.*
+                     , lens    == 4.*
+                     , mtl                >= 2    && < 3
+                     , text    >= 1.2  && < 1.3
+                     , transformers       >= 0.3  && < 0.5
+                     , wai                >= 3.0  && < 3.1
+                     , servant-foreign
+
   default-language:    Haskell2010
+  ghc-options:         -Wall
 
 executable servant-elm-example
   hs-source-dirs:      example
@@ -32,6 +47,8 @@ executable servant-elm-example
                      , servant-server >= 0.4.4.5
                      , aeson >= 0.8
                      , time >= 1.5
+                     , transformers       >= 0.3  && < 0.5
+                     , transformers-compat>= 0.4
                      , wai >= 3.0.4
                      , wai-cors >= 0.2.4
                      , warp >= 3.1
