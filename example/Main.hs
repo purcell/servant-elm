@@ -7,16 +7,12 @@ module Main where
 
 import           Control.Monad.Trans.Either
 import           Data.Aeson
-import           Data.Time.Calendar
 import           GHC.Generics
 import           Network.Wai
 import           Network.Wai.Handler.Warp
 import           Network.Wai.Middleware.Cors
 import           Servant
 import           Servant.Elm
-
-import qualified Data.Text                   as T
-import qualified Data.Text.IO                as T
 
 type UserAPI = "users" :> Get '[JSON] [User]
           :<|> "discovery" :> Capture "id" Int :> Get '[JSON] Discovery
@@ -28,7 +24,7 @@ data User = User
 
 data Discovery = Discovery
   { details :: String
-  , year :: Int
+  , year    :: Int
   } deriving (Eq, Show, Generic)
 
 instance ToJSON User
