@@ -33,6 +33,7 @@ executable servant-elm-example
                      , aeson >= 0.8
                      , time >= 1.5
                      , wai >= 3.0.4
+                     , wai-cors >= 0.2.4
                      , warp >= 3.1
                      , text >= 1.2.1
                      , either >= 4.4.1

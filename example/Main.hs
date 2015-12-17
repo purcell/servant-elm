@@ -1,28 +1,29 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE DataKinds     #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TypeFamilies  #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Main where
 
-import Data.Aeson
-import Data.Time.Calendar
-import GHC.Generics
-import Network.Wai
-import Network.Wai.Handler.Warp
-import Control.Monad.Trans.Either
-import Servant
-import Servant.Elm
+import           Control.Monad.Trans.Either
+import           Data.Aeson
+import           Data.Time.Calendar
+import           GHC.Generics
+import           Network.Wai
+import           Network.Wai.Handler.Warp
+import           Network.Wai.Middleware.Cors
+import           Servant
+import           Servant.Elm
 
-import qualified Data.Text    as T
-import qualified Data.Text.IO as T
+import qualified Data.Text                   as T
+import qualified Data.Text.IO                as T
 
 type UserAPI = "users" :> Get '[JSON] [User]
           :<|> "discovery" :> Capture "id" Int :> Get '[JSON] Discovery
 
 data User = User
   { name :: String
-  , age :: Int
+  , age  :: Int
   } deriving (Eq, Show, Generic)
 
 data Discovery = Discovery
@@ -48,7 +49,7 @@ userAPI :: Proxy UserAPI
 userAPI = Proxy
 
 app :: Application
-app = serve userAPI server
+app = simpleCors $ serve userAPI server
 
 main :: IO ()
 main = do
