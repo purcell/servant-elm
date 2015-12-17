@@ -19,7 +19,7 @@ TODO
 ### Authors
 
 This software was written by
-[Andy Newport](https://github.com/newporta)
+[Andy Newport](https://github.com/newporta),
 [Steve Purcell](https://github.com/purcell) and
 [Kieran Trezona-le Comte](https://github.com/trezona-lecomte) with the
 support of our awesome employer
