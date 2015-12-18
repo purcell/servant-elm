@@ -57,17 +57,18 @@ generateElm reqs =
     ]
   where
     commaSepLines xs = "    " <>  T.intercalate "\n  , " xs
-    apiType = "API " <> (T.intercalate " " returnTypeVars)
+    apiType = "API " <> T.intercalate " " returnTypeVars
     returnTypeVars = typeVarsFor 'a' reqs
     reqsAndTypeVars = zip reqs returnTypeVars
 
 
+typeVarsFor :: Char -> [a] -> [ElmTypeVar]
 typeVarsFor from things = take (length things) $ map T.singleton [from..]
 
 elmFunctionDef :: (Req, ElmTypeVar) -> Text
 elmFunctionDef (req, typevar) =
   T.unlines
-    [elmReqFunctionName req <> " : Config -> " <> elmReqSignature req typevar
+    [ elmReqFunctionName req <> " : Config -> " <> elmReqSignature req typevar
     , elmReqFunctionName req <> " config decoder " <> T.intercalate " " (argNames req) <> " ="
     , "  Http.send config.settings"
     , "        { verb = \"" <> elmReqMethod req <> "\""
@@ -88,13 +89,11 @@ elmReqMethod req = req ^. reqMethod
 elmReqFunctionName :: Req -> ElmFunctionName
 elmReqFunctionName req = camelCase (req ^. funcName)
 
--- e.g. "Decode.Decoder a -> Task.Task Http.Error a"
 elmReqSignature :: Req -> ElmTypeVar -> ElmSignature
 elmReqSignature req tvar = T.intercalate " -> " typeArgs
   where typeArgs = [ "Decode.Decoder " <> tvar] ++ captureTypes ++ ["Task.Task Http.Error " <> tvar]
         captureTypes = typeVarsFor 'l' (filter isCapture (segments req))
 
--- e.g. "getFoobar :: Decode.Decoder a -> Task.Task Http.Error a"
 curriedFunctionField :: (Req, ElmTypeVar) -> Text
 curriedFunctionField (req, typevar) = elmReqFunctionName req <> " : " <> elmReqSignature req typevar
 
@@ -113,6 +112,7 @@ argNames req = map extractArgName (filter isCapture (segments req))
         (Cap arg) -> elmArgName arg
         _ -> undefined
 
+segments :: Req -> [Segment]
 segments req = req ^. reqUrl ^. path
 
 elmArgName :: (Text, Text) -> Text
