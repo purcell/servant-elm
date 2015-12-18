@@ -92,7 +92,7 @@ elmReqFunctionName req = camelCase (req ^. funcName)
 elmReqSignature :: Req -> ElmTypeVar -> ElmSignature
 elmReqSignature req tvar = T.intercalate " -> " typeArgs
   where typeArgs = [ "Decode.Decoder " <> tvar] ++ captureTypes ++ ["Task.Task Http.Error " <> tvar]
-        captureTypes = typeVarsFor 'l' (filter isCapture (segments req))
+        captureTypes = map (const "Int") (filter isCapture (segments req))
 
 curriedFunctionField :: (Req, ElmTypeVar) -> Text
 curriedFunctionField (req, typevar) = elmReqFunctionName req <> " : " <> elmReqSignature req typevar

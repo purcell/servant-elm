@@ -86,7 +86,7 @@ renderDiscovery discovery = div [] [ text discovery.details, text " - ", text (t
 
 fetchUsers : Effects Action
 fetchUsers =
-  api.fetchUsers (Json.list decodeUser)
+  api.getUsers (Json.list decodeUser)
     |> Debug.log "result"
     |> Task.toMaybe
     |> Task.map ReceiveUsers
@@ -94,7 +94,7 @@ fetchUsers =
 
 fetchDiscovery : Int -> Effects Action
 fetchDiscovery num =
-  api.fetchDiscovery decodeDiscovery num
+  api.getDiscoveryById decodeDiscovery num
     |> Debug.log "result"
     |> Task.toMaybe
     |> Task.map ReceiveDiscovery

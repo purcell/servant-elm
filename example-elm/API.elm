@@ -10,12 +10,12 @@ type alias Config = {
   , settings : Http.Settings
   }
 
-type alias API a b l = {
+type alias API a b = {
     getUsers : Decode.Decoder a -> Task.Task Http.Error a
-  , getDiscoveryById : Decode.Decoder b -> l -> Task.Task Http.Error b
+  , getDiscoveryById : Decode.Decoder b -> Int -> Task.Task Http.Error b
   }
 
-getAPI : Config -> API a b l
+getAPI : Config -> API a b
 getAPI config = {
     getUsers = getUsers config
   , getDiscoveryById = getDiscoveryById config
@@ -31,7 +31,8 @@ getUsers config decoder  =
         , body = Http.empty
         } |> Http.fromJson decoder
 
-getDiscoveryById : Config -> Decode.Decoder b -> l -> Task.Task Http.Error b
+
+getDiscoveryById : Config -> Decode.Decoder b -> Int -> Task.Task Http.Error b
 getDiscoveryById config decoder argId =
   Http.send config.settings
         { verb = "GET"
@@ -39,3 +40,4 @@ getDiscoveryById config decoder argId =
         , url = (config.baseURI ++ "/" ++ "discovery" ++ "/"  ++ (toString argId))
         , body = Http.empty
         } |> Http.fromJson decoder
+
