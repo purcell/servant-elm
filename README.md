@@ -1,5 +1,7 @@
 ## servant-elm: Generate Elm modules which talk to Haskell Servant APIs
 
+### Notice: You probably want [Matt Bray's servant-elm](https://github.com/mattjbray/servant-elm) instead of this one
+
 ### About
 
 If you've described a REST API with
